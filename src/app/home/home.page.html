@@ -1,20 +1,151 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div>
+    <input type="text" style="padding:8px;margin:15px auto;width:30%;" placeholder="Type to filter the name column..."
+      (keyup)="updateFilter($event)" />
+    <!-- Theme classes dark, material, bootstrap -->
+    <ngx-datatable #table class="material" [limit]="5" [columnMode]="ColumnMode.force" [headerHeight]="50"
+      [footerHeight]="0" [rowHeight]="100" [rows]="rows" [scrollbarV]="true" [scrollbarH]="true">
+      <ngx-datatable-column name="தேதி" prop="date">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value | date: "dd/MM/yyyy"}}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="வரிசை எண்" prop="s.no">
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-s.no'] = true"
+            *ngIf="!editing[rowIndex + '-s.no']">
+            {{ value }}
+          </span>
+          <input autofocus (blur)="updateValue($event, 's.no', rowIndex)" *ngIf="editing[rowIndex + '-s.no']"
+            type="text" [value]="value" />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="திதி" prop="ththi">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-ththi'] = true"
+            *ngIf="!editing[rowIndex + '-ththi']">
+            {{ value }}
+          </span>
+          <select *ngIf="editing[rowIndex + '-ththi']" (blur)="editing[rowIndex + '-ththi'] = false"
+            (change)="updateValue($event, 'ththi', rowIndex)" [value]="value">
+            <option *ngFor="let thi of ththi" [value]="thi">{{thi}}</option>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+          </select>
+        </ng-template>
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+      </ngx-datatable-column>
+      <ngx-datatable-column name="நட்சத்திரம்" prop="natchathiram">
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-natchathiram'] = true"
+            *ngIf="!editing[rowIndex + '-natchathiram']">
+            {{ value }}
+          </span>
+          <select *ngIf="editing[rowIndex + '-natchathiram']" (blur)="editing[rowIndex + '-natchathiram'] = false"
+            (change)="updateValue($event, 'natchathiram', rowIndex)" [value]="value">
+            <option *ngFor="let thi of natchathiram" [value]="thi">{{thi}}</option>
+          </select>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="கரணம்" prop="karanam">
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-karanam'] = true"
+            *ngIf="!editing[rowIndex + '-karanam']">
+            {{ value }}
+          </span>
+          <select *ngIf="editing[rowIndex + '-karanam']" (blur)="editing[rowIndex + '-karanam'] = false"
+            (change)="updateValue($event, 'karanam', rowIndex)" [value]="value">
+            <option *ngFor="let thi of karanam" [value]="thi">{{thi}}</option>
+          </select>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="பக்ஷம்" prop="paksham">
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-paksham'] = true"
+            *ngIf="!editing[rowIndex + '-paksham']">
+            {{ value }}
+          </span>
+          <select *ngIf="editing[rowIndex + '-paksham']" (blur)="editing[rowIndex + '-paksham'] = false"
+            (change)="updateValue($event, 'paksham', rowIndex)" [value]="value">
+            <option *ngFor="let thi of paksham" [value]="thi">{{thi}}</option>
+          </select>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="யோகம்" prop="yogam">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="கிழமை" prop="kilamai">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="சந்திர ராசி" prop="raasi">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="திஷா ஷூல்" prop="thisai">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="நெடுவரிசை" prop="status">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- <ngx-datatable-column name="Name" [width]="300">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <span title="Double click to edit" (dblclick)="editing[rowIndex + '-name'] = true"
+          *ngIf="!editing[rowIndex + '-name']">
+          {{ value }}
+        </span>
+        <input autofocus (blur)="updateValue($event, 'name', rowIndex)" *ngIf="editing[rowIndex + '-name']" type="text"
+          [value]="value" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Gender">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <span title="Double click to edit" (dblclick)="editing[rowIndex + '-gender'] = true"
+          *ngIf="!editing[rowIndex + '-gender']">
+          {{ value }}
+        </span>
+        <select *ngIf="editing[rowIndex + '-gender']" (blur)="editing[rowIndex + '-gender'] = false"
+          (change)="updateValue($event, 'gender', rowIndex)" [value]="value">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Age">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{ value }}
+      </ng-template>
+    </ngx-datatable-column> -->
+    </ngx-datatable>
   </div>
 </ion-content>
