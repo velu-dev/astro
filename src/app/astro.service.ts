@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Years {
   id?: string,
@@ -16,7 +17,7 @@ export class AstroService {
   private years: Observable<Years[]>;
   private yearCollection: AngularFirestoreCollection<Years>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private http: HttpClient) {
     this.yearCollection = this.afs.collection<Years>('years');
     this.years = this.yearCollection.snapshotChanges().pipe(
       map(actions => {
@@ -48,10 +49,17 @@ export class AstroService {
   }
 
   updateYear(year: Years): Promise<void> {
-    return this.yearCollection.doc(year.id).update({ year: year.year, });
+    console.log(year)
+    return this.yearCollection.doc(year.id).update({ year: year.year, data: year.data });
   }
 
   deleteYear(id: string): Promise<void> {
     return this.yearCollection.doc(id).delete();
+  }
+  generatePDF(data): Observable<any> {
+    return this.http.post("https://astro-pdf.herokuapp.com/pdf", data)
+  }
+  initiateApp(): Observable<any> {
+    return this.http.get("https://astro-pdf.herokuapp.com/")
   }
 }

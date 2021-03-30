@@ -3,7 +3,7 @@ import { stringify } from '@angular/compiler/src/util';
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { Router, NavigationExtras } from '@angular/router';
-import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, PopoverController, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AstroService, Years } from '../astro.service';
@@ -15,23 +15,37 @@ import { AstroService, Years } from '../astro.service';
     styleUrls: ['list.page.scss'],
 })
 export class ListPage {
-    private years = [];
-    ththi = [
-        'அஷ்டமீ',
-        'நவமீ',
-        'தஷமீ',
-        'ஏகாதஷீ',
-        'த்வாதஷீ',
-        'த்ரயோதஷீ',
-        'சதுர்தஷீ',
-        'பூர்ணிமா',
-        'ப்ரதமா',
-        'த்விதீயா',
-        'த்ருதிய',
-        'சதுர்தீ',
-        'பஞ்சமீ',
-        'ஷஸ்டீ',
-        'ஸப்தமீ',
+    years = [];
+    ththi = ["ப்ரதமா",
+        "த்விதீயா",
+        "த்ருதிய",
+        "சதுர்தீ",
+        "பஞ்சமீ",
+        "ஷஸ்டீ",
+        "ஸப்தமீ",
+        "அஷ்டமீ",
+        "நவமீ",
+        "தஷமீ",
+        "ஏகாதஷீ",
+        "த்வாதஷீ",
+        "த்ரயோதஷீ",
+        "சதுர்தஷீ",
+        "பூர்ணிமா",
+        "ப்ரதமா",
+        "த்விதீயா",
+        "த்ருதிய",
+        "சதுர்தீ",
+        "பஞ்சமீ",
+        "ஷஸ்டீ",
+        "ஸப்தமீ",
+        "அஷ்டமீ",
+        "நவமீ",
+        "தஷமீ",
+        "ஏகாதஷீ",
+        "த்வாதஷீ",
+        "த்ரயோதஷீ",
+        "சதுர்தஷீ",
+        "அமாவஸ்யா"
     ];
     natchathiram = ['அஸ்வினி',
         'பரணி',
@@ -137,9 +151,13 @@ export class ListPage {
         'தெற்கு',
         'மேற்கு',
         'கிழக்கு']
-    constructor(private router: Router, private astroService: AstroService, private toastCtrl: ToastController, public actionSheetController: ActionSheetController, public alertController: AlertController) {
+    horai = ["சுக்கிரன்", "சாயபுத்ரா", "சூரியன்", "சந்திரன்", "அங்காரகன்", "கணக்கன்", "குரு"]
+    constructor(public popoverController: PopoverController, private router: Router, private astroService: AstroService, private toastCtrl: ToastController, public actionSheetController: ActionSheetController, public alertController: AlertController) {
         this.astroService.getYears().subscribe(res => {
             this.years = res
+        })
+        this.astroService.initiateApp().subscribe(res => {
+            console.log("initiated")
         })
 
     }
@@ -180,58 +198,67 @@ export class ListPage {
                 }, {
                     text: 'Ok',
                     handler: (data) => {
-                        // this.addIdea(data.name + "-" + data.year)
-                        let date = this.getDaysInMonth(2012)
-                        let i = 1;
-                        let ththiCount = 0;
-                        let nakchathiraCount = 0;
-                        let karanamCount = 0;
-                        let pakshamCount = 0;
-                        let defaultPaksham = 0
-                        let yogamCount = 0;
-                        let kilamaiCount = 0;
-                        let raasiCount = 0;
-                        let thisaiCount = 0;
-                        let consolidatedData = []
-                        date.map(res => {
-                            consolidatedData.push({ "s.no": i, date: res, ththi: this.ththi[ththiCount], natchathiram: this.natchathiram[nakchathiraCount], karanam: this.karanam[karanamCount], paksham: this.paksham[defaultPaksham], yogam: this.yogam[yogamCount], kilamai: this.kilamai[kilamaiCount], raasi: this.raasi[raasiCount], thisai: this.thisai[thisaiCount], isSelected: false });
-                            i = i + 1;
-                            nakchathiraCount = nakchathiraCount + 1;
-                            if (nakchathiraCount == this.natchathiram.length) {
-                                nakchathiraCount = 0;
-                            }
-                            ththiCount = ththiCount + 1;
-                            if (ththiCount == this.ththi.length) {
-                                ththiCount = 0;
-                            }
-                            karanamCount = karanamCount + 1;
-                            if (karanamCount == this.karanam.length) {
-                                karanamCount = 0;
-                            }
-                            pakshamCount = pakshamCount + 1;
-                            if (pakshamCount == 15) {
-                                pakshamCount = 0;
-                                defaultPaksham = defaultPaksham == 1 ? 0 : 1;
-                            }
-                            yogamCount = yogamCount + 1;
-                            if (yogamCount == this.yogam.length) {
-                                yogamCount = 0;
-                            }
-                            kilamaiCount = kilamaiCount + 1;
-                            if (kilamaiCount == this.kilamai.length) {
-                                kilamaiCount = 0;
-                            }
-                            raasiCount = raasiCount + 1;
-                            if (raasiCount == this.raasi.length) {
-                                raasiCount = 0;
-                            }
-                            thisaiCount = thisaiCount + 1;
-                            if (thisaiCount == this.thisai.length) {
-                                thisaiCount = 0;
-                            }
-                        })
-                        this.addYearData(data.name + "-" + data.year, consolidatedData);
-
+                        if (data.year) {
+                            let rawdate = new Date(data.year).getFullYear();
+                            let date = this.getDaysInMonth(rawdate)
+                            let i = 1;
+                            let ththiCount = 0;
+                            let nakchathiraCount = 0;
+                            let karanamCount = 0;
+                            let pakshamCount = 0;
+                            let defaultPaksham = 0
+                            let yogamCount = 0;
+                            let kilamaiCount = 0;
+                            let raasiCount = 0;
+                            let thisaiCount = 0;
+                            let horaiCount = 0;
+                            let consolidatedData = []
+                            date.map(res => {
+                                let dd = String(new Date(res).getDate()) + "/" + String(new Date(res).getMonth() + 1) + "/" + String(new Date(res).getFullYear())
+                                consolidatedData.push({ "sno": i, date: dd, varisaieann: i, ththi: this.ththi[ththiCount], natchathiram: this.natchathiram[nakchathiraCount], horai: this.horai[horaiCount], karanam: this.karanam[karanamCount], paksham: this.paksham[defaultPaksham], yogam: this.yogam[yogamCount], kilamai: this.kilamai[kilamaiCount], raasi: this.raasi[raasiCount], thisai: this.thisai[thisaiCount], isSelected: false });
+                                i = i + 1;
+                                nakchathiraCount = nakchathiraCount + 1;
+                                if (nakchathiraCount == this.natchathiram.length) {
+                                    nakchathiraCount = 0;
+                                }
+                                ththiCount = ththiCount + 1;
+                                if (ththiCount == this.ththi.length) {
+                                    ththiCount = 0;
+                                }
+                                karanamCount = karanamCount + 1;
+                                if (karanamCount == this.karanam.length) {
+                                    karanamCount = 0;
+                                }
+                                pakshamCount = pakshamCount + 1;
+                                if (pakshamCount == 15) {
+                                    pakshamCount = 0;
+                                    defaultPaksham = defaultPaksham == 1 ? 0 : 1;
+                                }
+                                yogamCount = yogamCount + 1;
+                                if (yogamCount == this.yogam.length) {
+                                    yogamCount = 0;
+                                }
+                                kilamaiCount = kilamaiCount + 1;
+                                if (kilamaiCount == this.kilamai.length) {
+                                    kilamaiCount = 0;
+                                }
+                                raasiCount = raasiCount + 1;
+                                if (raasiCount == this.raasi.length) {
+                                    raasiCount = 0;
+                                }
+                                thisaiCount = thisaiCount + 1;
+                                if (thisaiCount == this.thisai.length) {
+                                    thisaiCount = 0;
+                                }
+                                horaiCount = horaiCount + 1;
+                                if (horaiCount == this.horai.length) {
+                                    horaiCount = 0;
+                                }
+                            })
+                            this.addYearData(data.name + "-" + data.year, consolidatedData);
+                        } else {
+                            this.showToast("Please select Year");
+                        }
                     }
                 }
             ]
@@ -239,58 +266,46 @@ export class ListPage {
 
         await alert.present();
     }
-    // testFFunction() {
-    //     let date = this.getDaysInMonth(2012)
-    //     let i = 1;
-    //     let ththiCount = 0;
-    //     let nakchathiraCount = 0;
-    //     let karanamCount = 0;
-    //     let pakshamCount = 0;
-    //     let defaultPaksham = 0
-    //     let yogamCount = 0;
-    //     let kilamaiCount = 0;
-    //     let raasiCount = 0;
-    //     let thisaiCount = 0;
-    //     date.map(res => {
-    //         console.log({ "s.no": i, date: res, ththi: this.ththi[ththiCount], natchathiram: this.natchathiram[nakchathiraCount], karanam: this.karanam[karanamCount], paksham: this.paksham[defaultPaksham], yogam: this.yogam[yogamCount], kilamai: this.kilamai[kilamaiCount], raasi: this.raasi[raasiCount], thisai: this.thisai[thisaiCount], isSelected: false });
-    //         i = i + 1;
-    //         nakchathiraCount = nakchathiraCount + 1;
-    //         if (nakchathiraCount == this.natchathiram.length) {
-    //             nakchathiraCount = 0;
-    //         }
-    //         ththiCount = ththiCount + 1;
-    //         if (ththiCount == this.ththi.length) {
-    //             ththiCount = 0;
-    //         }
-    //         karanamCount = karanamCount + 1;
-    //         if (karanamCount == this.karanam.length) {
-    //             karanamCount = 0;
-    //         }
-    //         pakshamCount = pakshamCount + 1;
-    //         if (pakshamCount == 15) {
-    //             pakshamCount = 0;
-    //             defaultPaksham = defaultPaksham == 1 ? 0 : 1;
-    //         }
-    //         yogamCount = yogamCount + 1;
-    //         if (yogamCount == this.yogam.length) {
-    //             yogamCount = 0;
-    //         }
-    //         kilamaiCount = kilamaiCount + 1;
-    //         if (kilamaiCount == this.kilamai.length) {
-    //             kilamaiCount = 0;
-    //         }
-    //         raasiCount = raasiCount + 1;
-    //         if (raasiCount == this.raasi.length) {
-    //             raasiCount = 0;
-    //         }
-    //         thisaiCount = thisaiCount + 1;
-    //         if (thisaiCount == this.thisai.length) {
-    //             thisaiCount = 0;
-    //         }
-    //     })
-    // }
-    delete(year){
-        this.astroService.deleteYear(year.id)
+    async copyData(year) {
+        // year.year = year.year + "(1)";
+        // delete year["id"];
+        // this.addYearData(year.year, year.data);
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Create New Sheet!',
+            inputs: [
+                {
+                    name: 'name',
+                    type: 'text',
+                    value: year.year,
+                    placeholder: 'Sheet Name'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (data) => {
+                        this.addYearData(data.name, year.data);
+                    }
+                }
+            ]
+        })
+        await alert.present();
+    }
+
+    delete(year) {
+        this.astroService.deleteYear(year.id).then(res => {
+            this.showToast('Record Deleted....');
+        }).catch(error => {
+
+        })
     }
     addYearData(name, data) {
 

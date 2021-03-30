@@ -1,6 +1,44 @@
 @import '~@swimlane/ngx-datatable/index.css';
 @import '~@swimlane/ngx-datatable/themes/material.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
-.datatable-body{
-    height: 550px  !important;
+.ngx-datatable{
+    height: 700px;
+  }
+  ion-content ion-toolbar {
+    margin: 10px 0;
+  }
+ion-content{
+    --background: url("/assets/back.png") 0 0/100% 100% no-repeat;
+}
+ion-select {
+  /* Applies to the value and placeholder color */
+  color: #545ca7;
+
+  /* Set a different placeholder color */
+  --placeholder-color: #971e49;
+
+  /* Set full opacity on the placeholder */
+  --placeholder-opacity: 1;
+}
+datatable-body-cell{
+  border-style: ridge;
+}
+
+.form-select {
+    display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }

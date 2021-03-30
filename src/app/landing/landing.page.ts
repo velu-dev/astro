@@ -15,7 +15,7 @@ export class LandingPage implements OnInit {
   }
   login(form) {
     console.log(form.value)
-    if (form.value.pin == "1111") {
+    if (form.value.pin == "1566") {
       this.router.navigate(['/list']);
       localStorage.setItem("isLogin", "true")
     } else {

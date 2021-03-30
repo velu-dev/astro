@@ -6,6 +6,8 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { FileOpener } from '@ionic-native/file-opener';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   imports: [
@@ -13,7 +15,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    NgxDatatableModule
+    NgxDatatableModule,
   ],
   declarations: [HomePage]
 })
