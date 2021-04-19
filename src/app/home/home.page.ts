@@ -207,7 +207,7 @@ export class HomePage implements OnInit {
       let val = event.target.value;
       this.filterValue = val;
       let colsAmt = this.cols.length;
-      let keys = Object.keys(this.tempData[0]);
+      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai']
       this.rows = this.filteredData.filter(function (item) {
         for (let i = 0; i < colsAmt; i++) {
           if (item[keys[i]].toString().indexOf(val) !== -1 || !val) {
