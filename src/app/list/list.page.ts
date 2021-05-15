@@ -152,6 +152,25 @@ export class ListPage {
         'மேற்கு',
         'கிழக்கு']
     horai = ["சுக்கிரன்", "சாயபுத்ரா", "சூரியன்", "சந்திரன்", "அங்காரகன்", "கணக்கன்", "குரு"]
+    sokatiya = ["சல்",
+        "கால்",
+        "உத்வேக்",
+        "அம்ருத்",
+        "ரொக",
+        "லாப",
+        "சுப"]
+    lagna = ['மொமேஷ',
+        'பிவிரு',
+        'டுமிது',
+        'மோகட',
+        'பிஸிம்',
+        'டுகன்',
+        'மொதுல',
+        'பிவ்ரு',
+        'டுதனு',
+        'மோமக',
+        'பிகும்',
+        'டுமீன']
     constructor(public popoverController: PopoverController, private router: Router, private astroService: AstroService, private toastCtrl: ToastController, public actionSheetController: ActionSheetController, public alertController: AlertController) {
         this.astroService.getYears().subscribe(res => {
             this.years = res
@@ -207,15 +226,18 @@ export class ListPage {
                             let karanamCount = 0;
                             let pakshamCount = 0;
                             let defaultPaksham = 0
+                            let defaultLagna = 0
                             let yogamCount = 0;
                             let kilamaiCount = 0;
                             let raasiCount = 0;
                             let thisaiCount = 0;
                             let horaiCount = 0;
+                            let sokatiyaCount = 0;
+                            let lagnaCount = 0;
                             let consolidatedData = []
                             date.map(res => {
                                 let dd = String(new Date(res).getDate()) + "/" + String(new Date(res).getMonth() + 1) + "/" + String(new Date(res).getFullYear())
-                                consolidatedData.push({ "sno": i, date: dd, varisaieann: i, ththi: this.ththi[ththiCount], natchathiram: this.natchathiram[nakchathiraCount], horai: this.horai[horaiCount], karanam: this.karanam[karanamCount], paksham: this.paksham[defaultPaksham], yogam: this.yogam[yogamCount], kilamai: this.kilamai[kilamaiCount], raasi: this.raasi[raasiCount], thisai: this.thisai[thisaiCount], isSelected: false });
+                                consolidatedData.push({ "sno": i, date: dd, varisaieann: i, ththi: this.ththi[ththiCount], natchathiram: this.natchathiram[nakchathiraCount], horai: this.horai[horaiCount], karanam: this.karanam[karanamCount], paksham: this.paksham[defaultPaksham], yogam: this.yogam[yogamCount], kilamai: this.kilamai[kilamaiCount], raasi: this.raasi[raasiCount], thisai: this.thisai[thisaiCount], sokatiya: this.sokatiya[sokatiyaCount], lagna: this.lagna[defaultLagna], isSelected: false });
                                 i = i + 1;
                                 nakchathiraCount = nakchathiraCount + 1;
                                 if (nakchathiraCount == this.natchathiram.length) {
@@ -253,6 +275,19 @@ export class ListPage {
                                 horaiCount = horaiCount + 1;
                                 if (horaiCount == this.horai.length) {
                                     horaiCount = 0;
+                                }
+                                sokatiyaCount = sokatiyaCount + 1;
+                                if (sokatiyaCount == this.sokatiya.length) {
+                                    sokatiyaCount = 0;
+                                }
+                                lagnaCount = lagnaCount + 1;
+                                if (lagnaCount == 45) {
+                                    lagnaCount = 0;
+                                    if (defaultLagna == 11) {
+                                        defaultLagna = 0;
+                                    } else {
+                                        defaultLagna = defaultLagna + 1
+                                    }
                                 }
                             })
                             this.addYearData(data.name + "-" + data.year, consolidatedData);

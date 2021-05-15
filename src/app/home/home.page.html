@@ -21,7 +21,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Standard</ion-title>
+    <ion-title>Result</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -207,12 +207,36 @@
             <option></option>
             <option *ngFor="let thi of horai" [value]="thi">{{thi}}</option>
           </select>
-          <!-- <ion-select *ngIf="editing[rowIndex + '-natchathiram']" (blur)="editing[rowIndex + '-natchathiram'] = false"
-            (change)="updateValue($event, 'natchathiram', rowIndex)" [value]="value">
-            <ion-select-option *ngFor="let thi of natchathiram" [value]="thi">{{thi}}</ion-select-option>
-          </ion-select> -->
         </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="சொகடியா" [sortable]="false" prop="sokatiya">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (click)="edit(rowIndex,'sokatiya')"
+            *ngIf="!editing[rowIndex + '-sokatiya']">
+            {{ value }}
+          </span>
+          <select class="form-select" *ngIf="editing[rowIndex + '-sokatiya']" (blur)="editing[rowIndex + '-sokatiya'] = false"
+            (change)="updateValue($event, 'sokatiya', rowIndex)" [value]="value">
+            <option></option>
+            <option *ngFor="let sok of sokatiya" [value]="sok">{{sok}}</option>
+          </select>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="லக்கின" [sortable]="false" prop="lagna">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (click)="edit(rowIndex,'lagna')"
+            *ngIf="!editing[rowIndex + '-lagna']">
+            {{ value }}
+          </span>
+          <select class="form-select" *ngIf="editing[rowIndex + '-lagna']" (blur)="editing[rowIndex + '-lagna'] = false"
+            (change)="updateValue($event, 'lagna', rowIndex)" [value]="value">
+            <option></option>
+            <option *ngFor="let lag of lagna" [value]="lag">{{lag}}</option>
+          </select>
+        </ng-template>
+      </ngx-datatable-column>
+
       <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false"
         name="ok" prop="isSelected">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value"

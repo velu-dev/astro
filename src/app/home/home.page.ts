@@ -156,6 +156,25 @@ export class HomePage implements OnInit {
     'மேற்கு',
     'கிழக்கு']
   horai = ["சுக்கிரன்", "சாயபுத்ரா", "சூரியன்", "சந்திரன்", "அங்காரகன்", "கணக்கன்", "குரு"]
+  sokatiya = ["சல்",
+    "கால்",
+    "உத்வேக்",
+    "அம்ருத்",
+    "ரொக",
+    "லாப",
+    "சுப"]
+  lagna = ['மொமேஷ',
+    'பிவிரு',
+    'டுமிது',
+    'மோகட',
+    'பிஸிம்',
+    'டுகன்',
+    'மொதுல',
+    'பிவ்ரு',
+    'டுதனு',
+    'மோமக',
+    'பிகும்',
+    'டுமீன']
   editing = {};
   rows = [];
   tempData = []
@@ -164,7 +183,7 @@ export class HomePage implements OnInit {
   id: any;
   year: any;
   filteredData: any;
-  cols = [{ name: 'date' }, { name: 'varisaieann' }, { name: 'ththi' }, { name: 'natchathiram' }, { name: "horai" }, { name: 'karanam' }, { name: 'paksham' }, { name: 'yogam' }, { name: 'kilamai' }, { name: 'raasi' }, { name: 'thisai' }];
+  cols = [{ name: 'date' }, { name: 'varisaieann' }, { name: 'ththi' }, { name: 'natchathiram' }, { name: "horai" }, { name: 'karanam' }, { name: 'paksham' }, { name: 'yogam' }, { name: 'kilamai' }, { name: 'raasi' }, { name: 'thisai' }, { name: 'sokatiya' }, { name: "lagna" }];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   constructor(
     private opener: FileOpener, private file: File,
@@ -207,7 +226,7 @@ export class HomePage implements OnInit {
       let val = event.target.value;
       this.filterValue = val;
       let colsAmt = this.cols.length;
-      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai']
+      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna"]
       this.rows = this.filteredData.filter(function (item) {
         for (let i = 0; i < colsAmt; i++) {
           if (item[keys[i]].toString().indexOf(val) !== -1 || !val) {
@@ -273,6 +292,12 @@ export class HomePage implements OnInit {
     if (col == "ththi") {
       reorderData = this.ththi
     }
+    if (col == "sokatiya") {
+      reorderData = this.sokatiya
+    }
+    if (col == "lagna") {
+      reorderData = this.lagna
+    }
     valueIndex = reorderData.indexOf(value)
     let dummyCount = 0;
     let i = 0;
@@ -288,6 +313,17 @@ export class HomePage implements OnInit {
             if (dummyCount == 15) {
               dummyCount = 0;
               count = count == 0 ? 1 : 0;
+            }
+          } else if (col == "lagna") {
+            this.rows[i][col] = reorderData[count];
+            dummyCount = dummyCount + 1;
+            if (dummyCount == 45) {
+              dummyCount = 0;
+              if (count == 11) {
+                count = 0;
+              } else {
+                count = count + 1
+              }
             }
           } else {
             this.rows[i][col] = reorderData[count];
