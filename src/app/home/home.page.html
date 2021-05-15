@@ -30,6 +30,10 @@
       <ion-input clearInput style="padding:8px;margin:15px auto;width:100%;"
         placeholder="Type to filter the name column..." (keyup)="updateFilter($event)"></ion-input>
     </ion-item>
+    <ion-item *ngIf="isFilter">
+      <ion-input clearInput style="padding:8px;margin:15px auto;width:100%;"
+        placeholder="Type to filter the name column..." (keyup)="updateFilter1($event)"></ion-input>
+    </ion-item>
 
     <!-- Theme classes dark, material, bootstrap -->
     <ngx-datatable #table class="material" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0"
@@ -93,8 +97,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="கரணம்" [sortable]="false" prop="karanam">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'karanam')"
-            *ngIf="!editing[rowIndex + '-karanam']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'karanam')" *ngIf="!editing[rowIndex + '-karanam']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-karanam']"
@@ -111,8 +114,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="பக்ஷம்" [sortable]="false" prop="paksham">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'paksham')"
-            *ngIf="!editing[rowIndex + '-paksham']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'paksham')" *ngIf="!editing[rowIndex + '-paksham']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-paksham']"
@@ -145,8 +147,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="கிழமை" [sortable]="false" prop="kilamai">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'kilamai')"
-            *ngIf="!editing[rowIndex + '-kilamai']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'kilamai')" *ngIf="!editing[rowIndex + '-kilamai']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-kilamai']"
@@ -163,8 +164,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="சந்திர ராசி" [sortable]="false" prop="raasi">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'raasi')"
-            *ngIf="!editing[rowIndex + '-raasi']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'raasi')" *ngIf="!editing[rowIndex + '-raasi']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-raasi']" (blur)="editing[rowIndex + '-raasi'] = false"
@@ -178,10 +178,10 @@
           </ion-select> -->
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column name="திஷா ஷூல்" [sortable]="false" prop="thisai">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'thisai')"
-            *ngIf="!editing[rowIndex + '-thisai']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'thisai')" *ngIf="!editing[rowIndex + '-thisai']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-thisai']"
@@ -190,16 +190,12 @@
             <option></option>
             <option *ngFor="let thi of thisai" [value]="thi">{{thi}}</option>
           </select>
-          <!-- <ion-select *ngIf="editing[rowIndex + '-thisai']" (ionBlur)="editing[rowIndex + '-thisai'] = false"
-            (ionChange)="updateValue($event, 'thisai', rowIndex)" [value]="value">
-            <ion-select-option *ngFor="let thi of thisai" [value]="thi">{{thi}}</ion-select-option>
-          </ion-select> -->
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column name="ஹோரை" [sortable]="false" prop="horai">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'horai')"
-            *ngIf="!editing[rowIndex + '-horai']">
+          <span title="Double click to edit" (click)="edit(rowIndex,'horai')" *ngIf="!editing[rowIndex + '-horai']">
             {{ value }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-horai']" (blur)="editing[rowIndex + '-horai'] = false"
@@ -209,14 +205,16 @@
           </select>
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column name="சொகடியா" [sortable]="false" prop="sokatiya">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span title="Double click to edit" (click)="edit(rowIndex,'sokatiya')"
             *ngIf="!editing[rowIndex + '-sokatiya']">
-            {{ value }}
+            {{ value ? value : "Please Select" }}
           </span>
-          <select class="form-select" *ngIf="editing[rowIndex + '-sokatiya']" (blur)="editing[rowIndex + '-sokatiya'] = false"
-            (change)="updateValue($event, 'sokatiya', rowIndex)" [value]="value">
+          <select class="form-select" *ngIf="editing[rowIndex + '-sokatiya']"
+            (blur)="editing[rowIndex + '-sokatiya'] = false" (change)="updateValue($event, 'sokatiya', rowIndex)"
+            [value]="value">
             <option></option>
             <option *ngFor="let sok of sokatiya" [value]="sok">{{sok}}</option>
           </select>
@@ -225,9 +223,8 @@
 
       <ngx-datatable-column name="லக்கின" [sortable]="false" prop="lagna">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (click)="edit(rowIndex,'lagna')"
-            *ngIf="!editing[rowIndex + '-lagna']">
-            {{ value }}
+          <span title="Double click to edit" (click)="edit(rowIndex,'lagna')" *ngIf="!editing[rowIndex + '-lagna']">
+            {{ value ? value : "Please Select" }}
           </span>
           <select class="form-select" *ngIf="editing[rowIndex + '-lagna']" (blur)="editing[rowIndex + '-lagna'] = false"
             (change)="updateValue($event, 'lagna', rowIndex)" [value]="value">

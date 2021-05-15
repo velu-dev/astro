@@ -229,8 +229,10 @@ export class HomePage implements OnInit {
       let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna"]
       this.rows = this.filteredData.filter(function (item) {
         for (let i = 0; i < colsAmt; i++) {
-          if (item[keys[i]].toString().indexOf(val) !== -1 || !val) {
-            return true;
+          if (item[keys[i]]) {
+            if (item[keys[i]].toString().indexOf(val) !== -1 || !val) {
+              return true;
+            }
           }
         }
       });
@@ -239,6 +241,25 @@ export class HomePage implements OnInit {
     }
     this.isFilter = true;
     this.table.offset = 0;
+  }
+  updateFilter1(event){
+    if (event.target.value != "") {
+      let val = event.target.value;
+      this.filterValue = val;
+      let colsAmt = this.cols.length;
+      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna"]
+      this.rows = this.rows.filter(function (item) {
+        for (let i = 0; i < colsAmt; i++) {
+          if (item[keys[i]]) {
+            if (item[keys[i]].toString().indexOf(val) !== -1 || !val) {
+              return true;
+            }
+          }
+        }
+      });
+    } else {
+      this.rows = this.rows
+    }
   }
   isSelected: any;
   updateValue(event, cell, rowIndex) {
@@ -419,7 +440,9 @@ export class HomePage implements OnInit {
     this.socialSharing.shareWithOptions(options)
   }
   edit(rowIndex, name) {
+    console.log("ffdsfsdf");
     if (!this.rows[rowIndex].isSelected) {
+      console.log("ffdsfsdf");
       this.isFilter = false;
       this.editing[rowIndex + '-' + name] = true
     }
