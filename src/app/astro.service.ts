@@ -49,7 +49,6 @@ export class AstroService {
   }
 
   updateYear(year: Years): Promise<void> {
-    console.log(year)
     return this.yearCollection.doc(year.id).update({ year: year.year, data: year.data });
   }
 

@@ -242,7 +242,7 @@ export class HomePage implements OnInit {
     this.isFilter = true;
     this.table.offset = 0;
   }
-  updateFilter1(event){
+  updateFilter1(event) {
     if (event.target.value != "") {
       let val = event.target.value;
       this.filterValue = val;
@@ -268,15 +268,21 @@ export class HomePage implements OnInit {
       if (event == true || event == false) {
         value = event ? false : true;
       } else {
-        value = event.target.value;
-        if (cell != "varisaieann")
-          this.reorder(rowIndex, cell, value);
+        if (event.target) {
+          value = event.target.value;
+          if (cell != "varisaieann")
+            this.reorder(rowIndex, cell, value);
+        }
       }
       this.editing[rowIndex + '-' + cell] = false;
       this.rows[rowIndex][cell] = value;
       this.rows = [...this.rows];
       let data = { id: this.id, year: this.year, data: this.rows }
-      this.astroService.updateYear(data);
+      this.astroService.updateYear(data).then(res => {
+        console.log(res);
+      }).catch(error => {
+        console.log(error)
+      })
       this.getDate();
     }
   }
@@ -440,7 +446,7 @@ export class HomePage implements OnInit {
     this.socialSharing.shareWithOptions(options)
   }
   edit(rowIndex, name) {
-    console.log("ffdsfsdf");
+    console.log("ffdsfsdf", this.rows[rowIndex].isSelected);
     if (!this.rows[rowIndex].isSelected) {
       console.log("ffdsfsdf");
       this.isFilter = false;
