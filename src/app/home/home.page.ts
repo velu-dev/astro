@@ -374,7 +374,7 @@ export class HomePage implements OnInit {
     })
     this.presentLoading();
     this.astroService.generatePDF({ name: this.year, place: "dsfdsf", searchText: this.filterValue, datas: exportData }).subscribe(res => {
-      this.showPdf(res.pdf,)
+      this.showPdf(res.pdf)
     })
   }
   showPdf(base64) {
