@@ -16,6 +16,9 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
+      <ion-button (click)="save()">
+        <ion-icon slot="icon-only" size="medium" ios="add-circle" md="add-circle"></ion-icon>
+      </ion-button>
       <ion-button (click)="exportCSV(this.rows)">
         <ion-icon slot="icon-only" size="medium" ios="ellipsis-horizontal" md="download"></ion-icon>
       </ion-button>
@@ -38,6 +41,15 @@
     <!-- Theme classes dark, material, bootstrap -->
     <ngx-datatable #table class="material" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0"
       [rowHeight]="50" [rows]="rows" [scrollbarV]="true" [scrollbarH]="true" [limit]="10">
+      <ngx-datatable-column name="" [width]="10" [sortable]="false">
+        <!-- <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+            <ion-icon slot="icon-only" style="margin-left: -13px;" (click)="presentAlertPrompt(rowIndex)" size="large" ios="add-circle" md="add-circle"></ion-icon>
+          
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column name="எண்" [width]="20" [sortable]="false" prop="sno">
         <ng-template ngx-datatable-cell-template let-value="value">
           {{ value }}
@@ -231,6 +243,15 @@
             <option></option>
             <option *ngFor="let lag of lagna" [value]="lag">{{lag}}</option>
           </select>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="குறிப்பு" [sortable]="false" prop="kurippu">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (click)="edit(rowIndex,'kurippu')" *ngIf="!editing[rowIndex + '-kurippu']">
+            {{ value? value : "Enter Value" }}
+          </span>
+          <input autofocus (blur)="updateValue($event, 'kurippu', rowIndex)" class="form-control"
+            *ngIf="editing[rowIndex + '-kurippu']" [value]="value" />
         </ng-template>
       </ngx-datatable-column>
 

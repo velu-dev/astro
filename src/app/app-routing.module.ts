@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./landing/landing.module').then(m => m.LandingPageModule)
   },
   {
+    path: "collection",
+    loadChildren: () => import('./collection/collection.module').then(m => m.CollectionPageModule)
+  },
+  {
     path: '',
     redirectTo: 'landing',
     pathMatch: 'full'

@@ -1,5 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button (click)="exportCSV()">
+        Collection
+      </ion-button>
+    </ion-buttons>
+
     <ion-title>All Sheets</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,10 +13,11 @@
 <ion-content [fullscreen]="true">
   <ion-card class="printable-content">
     <ion-list>
-      <ion-item button (click)="nav(year)" *ngFor="let year of years">
+      <ion-item button (click)="nav(year)" *ngFor="let year of years | sort:'year'">
         <ion-label>
           <h3>{{year.year}}</h3>
         </ion-label>
+        <ion-icon end name="create" size="medium" (click)="renameAlertPrompt(year); $event.stopPropagation();"></ion-icon>
         <ion-icon end name="copy" size="medium" (click)="copyData(year); $event.stopPropagation();"></ion-icon>
         <ion-icon end name="trash" size="medium" (click)="delete(year); $event.stopPropagation();"></ion-icon>
       </ion-item>

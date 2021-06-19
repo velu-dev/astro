@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { ArraySortPipe, ListPage } from './list.page';
 
-import { ListPageRoutingModule } from './list-routing.module';
+import { IonicModule } from '@ionic/angular';
+
+import { CollectionPageRoutingModule } from './collection-routing.module';
+
+import { CollectionPage } from './collection.page';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
@@ -12,9 +14,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     CommonModule,
     FormsModule,
     IonicModule,
-    ListPageRoutingModule,
+    CollectionPageRoutingModule,
     NgxDatatableModule
   ],
-  declarations: [ListPage, ArraySortPipe]
+  declarations: [CollectionPage]
 })
-export class ListPageModule { }
+export class CollectionPageModule { }

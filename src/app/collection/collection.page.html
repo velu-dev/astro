@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="exportCSV(this.rows)">
+        <ion-icon slot="icon-only" size="medium" ios="ellipsis-horizontal" md="download"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Collections</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-item>
+      <ion-input clearInput style="padding:8px;margin:15px auto;width:100%;"
+        placeholder="Type to filter the name column..." (keyup)="updateFilter($event)"></ion-input>
+    </ion-item>
+    <!-- Theme classes dark, material, bootstrap -->
+    <ngx-datatable #table class="material" [columnMode]="ColumnMode.force" [headerHeight]="50" [footerHeight]="0"
+      [rowHeight]="50" [rows]="rows" [scrollbarV]="true" [scrollbarH]="true" [limit]="10">
+      <ngx-datatable-column name="எண்" [width]="20" [sortable]="false" prop="sno">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="தேதி" [sortable]="false" prop="date">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value}}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="வரிசை எண்" [sortable]="false" prop="varisaieann">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="திதி" [sortable]="false" prop="ththi">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="நட்சத்திரம்" [sortable]="false" prop="natchathiram">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="கரணம்" [sortable]="false" prop="karanam">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="பக்ஷம்" [sortable]="false" prop="paksham">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="யோகம்" [sortable]="false" prop="yogam">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="கிழமை" [sortable]="false" prop="kilamai">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="சந்திர ராசி" [sortable]="false" prop="raasi">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="திஷா ஷூல்" [sortable]="false" prop="thisai">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="ஹோரை" [sortable]="false" prop="horai">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="சொகடியா" [sortable]="false" prop="sokatiya">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="லக்கின" [sortable]="false" prop="lagna">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="குறிப்பு" [sortable]="false" prop="kurippu">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false"
+        name="ok" prop="isSelected">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value }}
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </ion-card>
+</ion-content>

@@ -5,7 +5,7 @@ import { ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import { AstroService } from '../astro.service';
-import { LoadingController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -183,7 +183,7 @@ export class HomePage implements OnInit {
   id: any;
   year: any;
   filteredData: any;
-  cols = [{ name: 'date' }, { name: 'varisaieann' }, { name: 'ththi' }, { name: 'natchathiram' }, { name: "horai" }, { name: 'karanam' }, { name: 'paksham' }, { name: 'yogam' }, { name: 'kilamai' }, { name: 'raasi' }, { name: 'thisai' }, { name: 'sokatiya' }, { name: "lagna" }];
+  cols = [{ name: 'date' }, { name: 'varisaieann' }, { name: 'ththi' }, { name: 'natchathiram' }, { name: "horai" }, { name: 'karanam' }, { name: 'paksham' }, { name: 'yogam' }, { name: 'kilamai' }, { name: 'raasi' }, { name: 'thisai' }, { name: 'sokatiya' }, { name: "lagna" }, { name: "kurippu" }];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   constructor(
     private opener: FileOpener, private file: File,
@@ -192,6 +192,8 @@ export class HomePage implements OnInit {
     private loadingController: LoadingController,
     private route: ActivatedRoute,
     private astroService: AstroService,
+    public alertController: AlertController,
+    public toastController: ToastController,
     private http: HttpClient) {
     // this.file.checkDir(this.file.externalRootDirectory, 'Astro').then(response => { }).catch(err => {
     //   console.log('Directory doesn\'t exist' + JSON.stringify(err));
@@ -211,11 +213,90 @@ export class HomePage implements OnInit {
   ngOnInit() {
 
   }
+  // addRow(index) {
+  //   this.presentAlertPrompt();
+  // }
+  async presentAlertPrompt(index) {
+    console.log(index)
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Create New date!',
+      inputs: [
+        {
+          name: 'date',
+          type: 'date'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            if (data.date) {
+              let data1: any = [];
+              let i = 0;
+              this.rows.map((row: any) => {
+                data1.push(row)
+                if (i == index) {
+                  let dd = String(new Date(data.date).getDate()) + "/" + String(new Date(data.date).getMonth() + 1) + "/" + String(new Date(data.date).getFullYear())
+                  data1.push({
+                    date: dd,
+                    horai: "Please Enter",
+                    isSelected: false,
+                    karanam: "Please Enter",
+                    kilamai: "Please Enter",
+                    lagna: "Please Enter",
+                    natchathiram: "Please Enter",
+                    paksham: "Please Enter",
+                    raasi: "Please Enter",
+                    sokatiya: "Please Enter",
+                    thisai: "Please Enter",
+                    ththi: "Please Enter",
+                    varisaieann: "Please Enter",
+                    yogam: "Please Enter"
+                  })
+                }
+                i = i + 1;
+              })
+              this.rows = data1;
+              this.originalData = data1;
+            } else {
+              this.presentToast("Please Select Date");
+            }
+          }
+        }]
+    })
+    await alert.present();
+  }
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
+  colabdata: any = [];
+  originalData: any;
   getDate() {
+    this.astroService.getColabData().subscribe(res => {
+      if (res) {
+        this.colabdata = res.data;
+        console.log(res)
+      }
+    }, error => {
+      console.log(error)
+    })
     this.astroService.getYear(this.id).subscribe(res => {
       this.year = res.year;
       this.tempData = [...res.data]
       this.rows = res.data;
+      this.originalData = res.data;
       this.filteredData = res.data;
     })
   }
@@ -226,7 +307,7 @@ export class HomePage implements OnInit {
       let val = event.target.value;
       this.filterValue = val;
       let colsAmt = this.cols.length;
-      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna"]
+      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna", "kurippu"]
       this.rows = this.filteredData.filter(function (item) {
         for (let i = 0; i < colsAmt; i++) {
           if (item[keys[i]]) {
@@ -247,7 +328,7 @@ export class HomePage implements OnInit {
       let val = event.target.value;
       this.filterValue = val;
       let colsAmt = this.cols.length;
-      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna"]
+      let keys = ['date', 'varisaieann', 'ththi', 'natchathiram', "horai", 'karanam', 'paksham', 'yogam', 'kilamai', 'raasi', 'thisai', 'sokatiya', "lagna", "kurippu"]
       this.rows = this.rows.filter(function (item) {
         for (let i = 0; i < colsAmt; i++) {
           if (item[keys[i]]) {
@@ -261,8 +342,36 @@ export class HomePage implements OnInit {
       this.rows = this.rows
     }
   }
+  loadingPresent = false;
+  async activeLoader() {
+    this.loadingPresent = true;
+    const loading = await this.loadingController.create({
+      message: 'Please Wait...',
+    });
+    return await loading.present();
+  }
+  async dismissLoading() {
+    if (this.loadingPresent) {
+      await this.loadingController.dismiss();
+    }
+    this.loadingPresent = false;
+  }
   isSelected: any;
+  isSubmit = false;
   updateValue(event, cell, rowIndex) {
+    this.activeLoader();
+    // let i = 0;
+    // this.rows.map((row: any) => {
+    //   if (!row.kurippu) {
+    //     this.rows[i]['kurippu'] = "";
+    //   }
+    //   if (row.kurippu == undefined) {
+    //     this.rows[i]['kurippu'] = "";
+    //   }
+    //   i = i + 1;
+    // })
+    // let data = { id: this.id, year: this.year, data: this.rows }
+    // this.astroService.updateYear(data)
     if (!this.isFilter) {
       let value: any;
       if (event == true || event == false) {
@@ -275,11 +384,13 @@ export class HomePage implements OnInit {
         }
       }
       this.editing[rowIndex + '-' + cell] = false;
-      this.rows[rowIndex][cell] = value;
-      this.rows = [...this.rows];
-      let data = { id: this.id, year: this.year, data: this.rows }
+      this.originalData[rowIndex][cell] = value;
+      console.log(value)
+      this.originalData = [...this.originalData];
+      let data = { id: this.id, year: this.year, data: this.originalData }
+      console.log(data)
       this.astroService.updateYear(data).then(res => {
-        console.log(res);
+        this.dismissLoading();
       }).catch(error => {
         console.log(error)
       })
@@ -330,8 +441,6 @@ export class HomePage implements OnInit {
     let i = 0;
     let count = valueIndex;
     this.rows.map(res => {
-
-      console.log(res)
       if (i >= index) {
         if (!res.isSelected) {
           if (col == "paksham") {
@@ -452,5 +561,31 @@ export class HomePage implements OnInit {
       this.isFilter = false;
       this.editing[rowIndex + '-' + name] = true
     }
+  }
+  save() {
+    let dd: any;
+    if (this.colabdata) {
+      dd = this.colabdata.concat(this.rows)
+    } else {
+      dd = this.rows;
+    }
+    let data = { id: "123", data: dd }
+    this.astroService.updateColabs(data).then(res => {
+      this.alert();
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+  async alert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Success',
+      message: 'Data updated go to home.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
   }
 }

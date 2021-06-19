@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { PasswordService } from '../password.service';
 
 @Component({
   selector: 'app-landing',
@@ -9,18 +10,28 @@ import { AlertController } from '@ionic/angular';
 })
 export class LandingPage implements OnInit {
 
-  constructor(private router: Router, public alertController: AlertController) { }
+  constructor(private toastController: ToastController, private loadingController: LoadingController, private passwordService: PasswordService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
+
   }
   login(form) {
-    console.log(form.value)
-    if (form.value.pin == "1566") {
-      this.router.navigate(['/list']);
-      localStorage.setItem("isLogin", "true")
-    } else {
-      this.presentAlert();
-    }
+    this.activeLoader();
+    this.passwordService.getPassword().subscribe(res => {
+      if (res) {
+        if (form.value.pin == res.password) {
+          this.router.navigate(['/list']);
+          // localStorage.setItem("isLogin", "true")
+        } else {
+          this.dismissLoading();
+          this.presentAlert();
+          return
+        }
+        this.dismissLoading();
+      }
+    }, error => {
+      console.log(error)
+    })
   }
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -31,5 +42,60 @@ export class LandingPage implements OnInit {
     });
 
     await alert.present();
+  }
+  loadingPresent = false;
+  async activeLoader() {
+    this.loadingPresent = true;
+    const loading = await this.loadingController.create({
+      message: 'Please Wait...',
+    });
+    return await loading.present();
+  }
+  async dismissLoading() {
+    if (this.loadingPresent) {
+      await this.loadingController.dismiss();
+    }
+    this.loadingPresent = false;
+  }
+  async changepassword() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Change Password!',
+      inputs: [
+        {
+          name: 'password',
+          type: 'text'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Save',
+          handler: (data) => {
+            if (data.password) {
+              this.activeLoader();
+              this.passwordService.updatePassword({ password: data.password }).then((res: any) => {
+                this.presentToast("Updated Successfull");
+                this.dismissLoading();
+              })
+            }
+          }
+        }
+      ]
+    })
+    await alert.present();
+  }
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
   }
 }

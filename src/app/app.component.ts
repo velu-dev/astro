@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   constructor(private router: Router) {
-    let isLogin = localStorage.getItem("isLogin");
-    if (isLogin == "true") {
-      this.router.navigate(['/list']);
-    } else {
-      this.router.navigate(['/landing'])
-    }
+    // let isLogin = localStorage.getItem("isLogin");
+    // if (isLogin == "true") {
+    //   this.router.navigate(['/list']);
+    // } else {
+    //   this.router.navigate(['/landing'])
+    // }
   }
 }
